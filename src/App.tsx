@@ -8,7 +8,23 @@ const IntroModelScene = lazy(() => import('./components/IntroModelScene'))
 const INTRO_AUTO_EXIT_DELAY = 5600
 const INTRO_HIDE_DELAY = 1200
 
-const navLinks = ['Hakkımızda', 'Yönetim Kurulu', 'İl Başkanları', 'Ziyaretlerimiz', 'Duyurular', 'PARHAD Akademi', 'İletişim Bilgileri']
+type NavItem = { label: string; children?: string[] }
+const navLinks: NavItem[] = [
+  {
+    label: 'Hakkımızda',
+    children: ['Misyon', 'Vizyon', 'Temel İlkelerimiz', 'Tüzük', 'Kurumsal Kimlik', 'Logo', 'Kimler Üye Olabilir'],
+  },
+  { label: 'Yönetim Kurulu' },
+  { label: 'İl Başkanları' },
+  { label: 'Ziyaretlerimiz' },
+  { label: 'Duyurular' },
+  {
+    label: 'Komisyonlar',
+    children: ['Akademi Komisyonu', 'Hukuk Komisyonu', 'Medya Tanıtım Komisyonu', 'Eğitim Komisyonu'],
+  },
+  { label: 'Eğitimler' },
+  { label: 'İletişim Bilgileri' },
+]
 
 const commandLinks = [
   'Makaleler',
@@ -571,10 +587,22 @@ function App() {
                 alt="PARHAD"
               />
               <nav className="nav-pill" aria-label="Primary">
-                {siteContent.navLinks.map((item) => (
-                  <button key={item} type="button">
-                    {item}
-                  </button>
+                {navLinks.map((item) => (
+                  <div key={item.label} className="nav-item">
+                    <button type="button" className={item.children ? 'nav-has-children' : ''}>
+                      {item.label}
+                      {item.children && <span className="nav-chevron">▾</span>}
+                    </button>
+                    {item.children && (
+                      <div className="nav-dropdown">
+                        {item.children.map(child => (
+                          <button key={child} type="button" className="nav-dropdown-item">
+                            {child}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </nav>
             </header>
