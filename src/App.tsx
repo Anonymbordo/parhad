@@ -725,7 +725,7 @@ function App() {
 
             <div className="map-stage">
               <div className="map-stage-label">
-                <p>Coğrafi Dağılım</p>
+                <p>İl Başkanları</p>
               </div>
               <article className="map-panel map-panel-maponly">
                 <div
