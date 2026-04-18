@@ -7,7 +7,7 @@ const IntroModelScene = lazy(() => import('./components/IntroModelScene'))
 const INTRO_AUTO_EXIT_DELAY = 5600
 const INTRO_HIDE_DELAY = 1200
 
-const navLinks = ['Dernek', 'Etkinlikler', 'İl Ağları', 'Akademi', 'İletişim']
+const navLinks = ['Hakkımızda', 'Yönetim Kurulu', 'İl Başkanları', 'Ziyaretlerimiz', 'Duyurular', 'PARHAD Akademi', 'İletişim Bilgileri']
 
 const commandLinks = [
   'Makaleler',
