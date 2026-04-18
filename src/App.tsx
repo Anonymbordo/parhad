@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties } from 'react'
 import './App.css'
 import turkeyMapMarkup from '../tr.svg?raw'
+import { getContent, saveContent, type SiteContent } from './admin/store'
 
 const IntroModelScene = lazy(() => import('./components/IntroModelScene'))
 
@@ -367,16 +368,38 @@ const floatingPanels = [
 
 const [primaryFloatingPanel, secondaryFloatingPanel] = floatingPanels
 
+const DEFAULT_CONTENT: SiteContent = {
+  navLinks,
+  ribEvents,
+  overflowBulletins,
+  overflowPages,
+}
+
 function App() {
   const [introExiting, setIntroExiting] = useState(false)
   const [introHidden, setIntroHidden] = useState(false)
-  const [activeRegionId, setActiveRegionId] = useState<string>(ribEvents[1]?.id ?? ribEvents[0].id)
+  const [siteContent, setSiteContent] = useState<SiteContent>(() => {
+    const stored = getContent()
+    if (!stored) { saveContent(DEFAULT_CONTENT); return DEFAULT_CONTENT }
+    return stored
+  })
+  const activeRibEvents = siteContent.ribEvents
+  const [activeRegionId, setActiveRegionId] = useState<string>(activeRibEvents[1]?.id ?? activeRibEvents[0]?.id)
   const mainRef = useRef<HTMLElement | null>(null)
   const exitStartedRef = useRef(false)
   const hideTimeoutRef = useRef<number | null>(null)
   const scrollTimeoutRef = useRef<number | null>(null)
   const touchStartYRef = useRef<number | null>(null)
-  const activeRegion = ribEvents.find((event) => event.id === activeRegionId) ?? ribEvents[1]
+  const activeRegion = activeRibEvents.find((event) => event.id === activeRegionId) ?? activeRibEvents[1]
+
+  useEffect(() => {
+    function onContentUpdate() {
+      const updated = getContent()
+      if (updated) setSiteContent(updated)
+    }
+    window.addEventListener('parhad_content_updated', onContentUpdate)
+    return () => window.removeEventListener('parhad_content_updated', onContentUpdate)
+  }, [])
 
   function startIntroExit(scrollToContent: boolean) {
     if (exitStartedRef.current) {
@@ -540,7 +563,7 @@ function App() {
                 alt="PARHAD"
               />
               <nav className="nav-pill" aria-label="Primary">
-                {navLinks.map((item) => (
+                {siteContent.navLinks.map((item) => (
                   <button key={item} type="button">
                     {item}
                   </button>
@@ -582,7 +605,7 @@ function App() {
                   <div className="focus-dock">
                     <p className="focus-dock-label">Vertebral odak</p>
                     <div className="focus-chip-row">
-                      {ribEvents.map((event) => (
+                      {activeRibEvents.map((event) => (
                         <button
                           key={event.id}
                           className={`focus-chip ${activeRegionId === event.id ? 'focus-chip-active' : ''}`}
@@ -686,7 +709,7 @@ function App() {
             </div>
 
             <div className="bulletin-strip-stack">
-              {overflowBulletins.map((track, index) => (
+              {siteContent.overflowBulletins.map((track, index) => (
                 <div
                   className={`bulletin-strip ${index % 2 === 1 ? 'bulletin-strip-reverse' : ''}`}
                   key={track.label}
@@ -703,7 +726,7 @@ function App() {
             </div>
 
             <div className="bulletin-grid">
-              {overflowPages.map((page) => (
+              {siteContent.overflowPages.map((page) => (
                 <article className="bulletin-card" key={page.title}>
                   <p>{page.eyebrow}</p>
                   <h3>{page.title}</h3>
