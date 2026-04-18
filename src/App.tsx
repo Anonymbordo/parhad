@@ -498,8 +498,6 @@ function App() {
           <div className="intro-orb intro-orb-right" aria-hidden="true" />
 
           <div className="intro-content">
-            <p className="intro-kicker">Parhad immersive entry</p>
-
             <div className="intro-brand-stage" aria-hidden="true">
               <img
                 className="intro-round-logo"
@@ -515,17 +513,9 @@ function App() {
               </div>
             </div>
 
-            <h1>Parhad sahnesi açılıyor. Aşağıda anatomik etkinlik evreni başlıyor.</h1>
-            <p className="intro-copy">
-              Bu kez klasik ana sayfa yok. Scroll ile girilen, omurga çevresinde
-              yaşayan, detaylı ve sinematik bir dernek deneyimi var.
-            </p>
-
             <div className="intro-progress" aria-hidden="true">
               <span />
             </div>
-
-            <p className="intro-hint">Aşağı kaydırarak sahneye gir</p>
 
             <button className="intro-skip" type="button" onClick={() => startIntroExit(true)}>
               Girişi Geç
