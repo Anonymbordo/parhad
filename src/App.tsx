@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties } from 'react'
 import './App.css'
 import turkeyMapMarkup from '../tr.svg?raw'
-import { getContent, saveContent, type SiteContent } from './admin/store'
+import { getContent, saveContent, type SiteContent, type RibEvent } from './admin/store'
 
 const IntroModelScene = lazy(() => import('./components/IntroModelScene'))
 
@@ -18,7 +18,7 @@ const commandLinks = [
   'Yorum Akışı',
 ]
 
-const ribEvents = [
+const ribEvents: RibEvent[] = [
   {
     id: 't12-l1',
     side: 'left',
