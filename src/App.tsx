@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties } from 'react'
 import './App.css'
 import turkeyMapMarkup from '../tr.svg?raw'
-import { getContent, saveContent, type SiteContent, type RibEvent } from './admin/store'
+import { getContent, saveContent, type SiteContent, type RibEvent, DEFAULT_SETTINGS } from './admin/store'
 
 const IntroModelScene = lazy(() => import('./components/IntroModelScene'))
 
@@ -373,6 +373,14 @@ const DEFAULT_CONTENT: SiteContent = {
   ribEvents,
   overflowBulletins,
   overflowPages,
+  posts: [],
+  pages: [],
+  media: [],
+  comments: [],
+  users: [],
+  categories: [],
+  tags: [],
+  settings: DEFAULT_SETTINGS,
 }
 
 function App() {

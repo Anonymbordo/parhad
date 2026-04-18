@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getContent, updatePages, type OverflowPage } from '../store'
+import { getContent, updateOverflowPages, type OverflowPage } from '../store'
 
 const EMPTY: OverflowPage = { eyebrow: '', title: '', body: '', meta: '' }
 
@@ -32,14 +32,14 @@ export default function Pages() {
     } else {
       updated = pages.map((p, i) => i === idx ? page : p)
     }
-    updatePages(updated)
+    updateOverflowPages(updated)
     refresh()
     closeDrawer()
   }
 
   function handleDelete(idx: number) {
     if (!content) return
-    updatePages(pages.filter((_, i) => i !== idx))
+    updateOverflowPages(pages.filter((_, i) => i !== idx))
     refresh()
   }
 
