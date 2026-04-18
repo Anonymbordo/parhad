@@ -724,6 +724,9 @@ function App() {
             </div>
 
             <div className="map-stage">
+              <div className="map-stage-label">
+                <p>İl Başkanları</p>
+              </div>
               <article className="map-panel map-panel-maponly">
                 <div
                   className="map-visual-wrap map-visual-inline"
