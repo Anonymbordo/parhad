@@ -1104,6 +1104,7 @@
 .map-stage {
   display: block;
   margin-top: 3rem;
+  overflow: visible;
 }
 
 .map-stage-label {
@@ -1142,13 +1143,15 @@
 
 .map-panel-maponly {
   padding: 0;
+  border-radius: 0;
+  margin-inline: clamp(-1.2rem, -2vw, -0.4rem);
 }
 
 .map-visual-wrap {
   position: relative;
   display: grid;
   place-items: center;
-  border-radius: 1.35rem;
+  border-radius: 0;
   background: transparent;
 }
 
@@ -1165,12 +1168,10 @@
 .map-visual-inline svg {
   position: relative;
   z-index: 1;
-  width: 100%;
+  width: min(100%, 92rem);
   height: auto;
   overflow: visible;
-  filter:
-    drop-shadow(0 8px 32px rgba(0, 0, 0, 0.28))
-    drop-shadow(0 0 24px rgba(112, 218, 255, 0.14));
+  filter: none;
 }
 
 .map-visual-inline svg #points,
@@ -1553,7 +1554,7 @@
   }
 
   .map-panel-maponly {
-    padding: 0.8rem;
+    margin-inline: 0;
   }
 }
 

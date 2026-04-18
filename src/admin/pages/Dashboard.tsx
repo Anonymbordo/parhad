@@ -9,6 +9,7 @@ export default function Dashboard() {
   const bulletinCount = content?.overflowBulletins.length ?? 0
   const pageCount = content?.overflowPages.length ?? 0
   const navCount = content?.navLinks.length ?? 0
+  const dropdownCount = content?.navLinks.reduce((total, item) => total + item.children.length, 0) ?? 0
 
   return (
     <>
@@ -34,7 +35,11 @@ export default function Dashboard() {
         </div>
         <div className="a-stat">
           <div className="a-stat-num">{navCount}</div>
-          <div className="a-stat-label">Nav Bağlantısı</div>
+          <div className="a-stat-label">Ana Menü</div>
+        </div>
+        <div className="a-stat">
+          <div className="a-stat-num">{dropdownCount}</div>
+          <div className="a-stat-label">Dropdown Sayfası</div>
         </div>
       </div>
 
@@ -46,8 +51,9 @@ export default function Dashboard() {
           {[
             { label: 'Etkinlikleri Düzenle', sub: 'Vertebral node etkinlikleri', path: '/admin/events' },
             { label: 'Bültenleri Düzenle', sub: 'Kayan bülten şeritleri', path: '/admin/bulletins' },
-            { label: 'İçerik Kartları', sub: 'Alt bölüm kart içerikleri', path: '/admin/pages' },
-            { label: 'Navigasyon Bağlantıları', sub: 'Üst menü linkleri', path: '/admin/navigation' },
+            { label: 'Site Sayfaları', sub: 'Bağımsız ve bağlı tüm sayfalar', path: '/admin/site-pages' },
+            { label: 'Header Sayfaları', sub: 'Üst menü ve dropdown mimarisi', path: '/admin/navigation' },
+            { label: 'İçerik Kartları', sub: 'Alt bölüm kart içerikleri', path: '/admin/content-cards' },
           ].map(item => (
             <li key={item.path} className="a-list-item" style={{ cursor: 'pointer' }} onClick={() => navigate(item.path)}>
               <div className="a-list-item-info">

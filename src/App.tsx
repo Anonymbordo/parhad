@@ -1,29 +1,44 @@
 import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties } from 'react'
 import './App.css'
 import turkeyMapMarkup from '../tr.svg?raw'
-import { getContent, saveContent, type SiteContent, type RibEvent, DEFAULT_SETTINGS } from './admin/store'
+import { getContent, saveContent, slugify, type SiteContent, type RibEvent, type NavLinkItem, DEFAULT_SETTINGS } from './admin/store'
 
 const IntroModelScene = lazy(() => import('./components/IntroModelScene'))
 
 const INTRO_AUTO_EXIT_DELAY = 5600
 const INTRO_HIDE_DELAY = 1200
 
-type NavItem = { label: string; children?: string[] }
-const navLinks: NavItem[] = [
+const defaultNavLinks: NavLinkItem[] = [
   {
+    id: 'nav-hakkimizda',
     label: 'Hakkımızda',
-    children: ['Misyon', 'Vizyon', 'Temel İlkelerimiz', 'Tüzük', 'Kurumsal Kimlik', 'Logo', 'Kimler Üye Olabilir'],
+    slug: 'hakkimizda',
+    pageId: null,
+    children: ['Misyon', 'Vizyon', 'Temel İlkelerimiz', 'Tüzük', 'Kurumsal Kimlik', 'Logo', 'Kimler Üye Olabilir'].map((label, index) => ({
+      id: `subnav-hakkimizda-${index + 1}`,
+      label,
+      slug: slugify(label),
+      pageId: null,
+    })),
   },
-  { label: 'Yönetim Kurulu' },
-  { label: 'İl Başkanları' },
-  { label: 'Ziyaretlerimiz' },
-  { label: 'Duyurular' },
+  { id: 'nav-yonetim-kurulu', label: 'Yönetim Kurulu', slug: 'yonetim-kurulu', pageId: null, children: [] },
+  { id: 'nav-il-baskanlari', label: 'İl Başkanları', slug: 'il-baskanlari', pageId: null, children: [] },
+  { id: 'nav-ziyaretlerimiz', label: 'Ziyaretlerimiz', slug: 'ziyaretlerimiz', pageId: null, children: [] },
+  { id: 'nav-duyurular', label: 'Duyurular', slug: 'duyurular', pageId: null, children: [] },
   {
+    id: 'nav-komisyonlar',
     label: 'Komisyonlar',
-    children: ['Akademi Komisyonu', 'Hukuk Komisyonu', 'Medya Tanıtım Komisyonu', 'Eğitim Komisyonu'],
+    slug: 'komisyonlar',
+    pageId: null,
+    children: ['Akademi Komisyonu', 'Hukuk Komisyonu', 'Medya Tanıtım Komisyonu', 'Eğitim Komisyonu'].map((label, index) => ({
+      id: `subnav-komisyonlar-${index + 1}`,
+      label,
+      slug: slugify(label),
+      pageId: null,
+    })),
   },
-  { label: 'Eğitimler' },
-  { label: 'İletişim Bilgileri' },
+  { id: 'nav-egitimler', label: 'Eğitimler', slug: 'egitimler', pageId: null, children: [] },
+  { id: 'nav-iletisim', label: 'İletişim Bilgileri', slug: 'iletisim-bilgileri', pageId: null, children: [] },
 ]
 
 const commandLinks = [
@@ -385,7 +400,7 @@ const floatingPanels = [
 const [primaryFloatingPanel, secondaryFloatingPanel] = floatingPanels
 
 const DEFAULT_CONTENT: SiteContent = {
-  navLinks,
+  navLinks: defaultNavLinks,
   ribEvents,
   overflowBulletins,
   overflowPages,
@@ -408,13 +423,17 @@ function App() {
     return stored
   })
   const activeRibEvents = siteContent.ribEvents
+  const activeNavLinks = siteContent.navLinks.length ? siteContent.navLinks : defaultNavLinks
   const [activeRegionId, setActiveRegionId] = useState<string>(activeRibEvents[1]?.id ?? activeRibEvents[0]?.id)
   const mainRef = useRef<HTMLElement | null>(null)
   const exitStartedRef = useRef(false)
   const hideTimeoutRef = useRef<number | null>(null)
   const scrollTimeoutRef = useRef<number | null>(null)
   const touchStartYRef = useRef<number | null>(null)
-  const activeRegion = activeRibEvents.find((event) => event.id === activeRegionId) ?? activeRibEvents[1]
+  const resolvedActiveRegionId = activeRibEvents.some((event) => event.id === activeRegionId)
+    ? activeRegionId
+    : (activeRibEvents[0]?.id ?? activeRegionId)
+  const activeRegion = activeRibEvents.find((event) => event.id === resolvedActiveRegionId) ?? activeRibEvents[0]
 
   useEffect(() => {
     function onContentUpdate() {
@@ -587,17 +606,17 @@ function App() {
                 alt="PARHAD"
               />
               <nav className="nav-pill" aria-label="Primary">
-                {navLinks.map((item) => (
+                {activeNavLinks.map((item) => (
                   <div key={item.label} className="nav-item">
-                    <button type="button" className={item.children ? 'nav-has-children' : ''}>
+                    <button type="button" className={item.children.length > 0 ? 'nav-has-children' : ''}>
                       {item.label}
-                      {item.children && <span className="nav-chevron">▾</span>}
+                      {item.children.length > 0 && <span className="nav-chevron">▾</span>}
                     </button>
-                    {item.children && (
+                    {item.children.length > 0 && (
                       <div className="nav-dropdown">
                         {item.children.map(child => (
-                          <button key={child} type="button" className="nav-dropdown-item">
-                            {child}
+                          <button key={child.id} type="button" className="nav-dropdown-item">
+                            {child.label}
                           </button>
                         ))}
                       </div>
@@ -644,7 +663,7 @@ function App() {
                       {activeRibEvents.map((event) => (
                         <button
                           key={event.id}
-                          className={`focus-chip ${activeRegionId === event.id ? 'focus-chip-active' : ''}`}
+                          className={`focus-chip ${resolvedActiveRegionId === event.id ? 'focus-chip-active' : ''}`}
                           type="button"
                           onClick={() => setActiveRegionId(event.id)}
                         >
@@ -671,7 +690,7 @@ function App() {
                 </div>
 
                 <div className="rib-anchor-layer">
-                  {ribEvents.map((event) => (
+                  {activeRibEvents.map((event) => (
                     <article
                       className={`rib-anchor rib-anchor-${event.side}`}
                       key={`${event.title}-${event.meta}`}
@@ -679,10 +698,10 @@ function App() {
                     >
                       <span className="rib-line" aria-hidden="true" />
                       <button
-                        className={`rib-node ${activeRegionId === event.id ? 'rib-node-active' : ''}`}
+                        className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
                         type="button"
                         onClick={() => setActiveRegionId(event.id)}
-                        aria-pressed={activeRegionId === event.id}
+                        aria-pressed={resolvedActiveRegionId === event.id}
                       >
                         <strong className="rib-node-level">{event.level}</strong>
                         <p>{event.region}</p>

@@ -1,5 +1,20 @@
 // ── Types ──────────────────────────────────────────────────────────────────
 
+export type NavLinkChild = {
+  id: string
+  label: string
+  slug: string
+  pageId: string | null
+}
+
+export type NavLinkItem = {
+  id: string
+  label: string
+  slug: string
+  pageId: string | null
+  children: NavLinkChild[]
+}
+
 export type RibEvent = {
   id: string
   side: 'left' | 'right'
@@ -123,7 +138,7 @@ export type SiteSettings = {
 }
 
 export type SiteContent = {
-  navLinks: string[]
+  navLinks: NavLinkItem[]
   ribEvents: RibEvent[]
   overflowBulletins: BulletinStrip[]
   overflowPages: OverflowPage[]
@@ -159,6 +174,122 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   language: 'tr',
 }
 
+function fallbackNavId(label: string, index: number, prefix: 'nav' | 'subnav') {
+  const base = slugify(label) || prefix
+  return `${prefix}-${base}-${index + 1}`
+}
+
+function normalizeNavChild(raw: unknown, parentLabel: string, index: number): NavLinkChild {
+  if (typeof raw === 'string') {
+    const label = raw.trim() || `${parentLabel} Alt Sayfa ${index + 1}`
+    return {
+      id: fallbackNavId(label, index, 'subnav'),
+      label,
+      slug: slugify(label),
+      pageId: null,
+    }
+  }
+
+  if (raw && typeof raw === 'object') {
+    const child = raw as Partial<NavLinkChild>
+    const label = typeof child.label === 'string' && child.label.trim()
+      ? child.label.trim()
+      : `${parentLabel} Alt Sayfa ${index + 1}`
+    const slug = typeof child.slug === 'string' && child.slug.trim()
+      ? slugify(child.slug)
+      : slugify(label)
+
+    return {
+      id: typeof child.id === 'string' && child.id.trim()
+        ? child.id
+        : fallbackNavId(label, index, 'subnav'),
+      label,
+      slug,
+      pageId: typeof child.pageId === 'string' && child.pageId.trim() ? child.pageId : null,
+    }
+  }
+
+  const label = `${parentLabel} Alt Sayfa ${index + 1}`
+  return {
+    id: fallbackNavId(label, index, 'subnav'),
+    label,
+    slug: slugify(label),
+    pageId: null,
+  }
+}
+
+function normalizeNavLink(raw: unknown, index: number): NavLinkItem {
+  if (typeof raw === 'string') {
+    const label = raw.trim() || `Menü ${index + 1}`
+    return {
+      id: fallbackNavId(label, index, 'nav'),
+      label,
+      slug: slugify(label),
+      pageId: null,
+      children: [],
+    }
+  }
+
+  if (raw && typeof raw === 'object') {
+    const item = raw as Partial<NavLinkItem> & { children?: unknown[] }
+    const label = typeof item.label === 'string' && item.label.trim()
+      ? item.label.trim()
+      : `Menü ${index + 1}`
+    const slug = typeof item.slug === 'string' && item.slug.trim()
+      ? slugify(item.slug)
+      : slugify(label)
+    const children = Array.isArray(item.children)
+      ? item.children.map((child, childIndex) => normalizeNavChild(child, label, childIndex))
+      : []
+
+    return {
+      id: typeof item.id === 'string' && item.id.trim()
+        ? item.id
+        : fallbackNavId(label, index, 'nav'),
+      label,
+      slug,
+      pageId: typeof item.pageId === 'string' && item.pageId.trim() ? item.pageId : null,
+      children,
+    }
+  }
+
+  return {
+    id: fallbackNavId(`Menü ${index + 1}`, index, 'nav'),
+    label: `Menü ${index + 1}`,
+    slug: `menu-${index + 1}`,
+    pageId: null,
+    children: [],
+  }
+}
+
+function normalizeSiteContent(raw: unknown): SiteContent | null {
+  if (!raw || typeof raw !== 'object') {
+    return null
+  }
+
+  const parsed = raw as Partial<SiteContent>
+
+  return {
+    navLinks: Array.isArray(parsed.navLinks)
+      ? parsed.navLinks.map((item, index) => normalizeNavLink(item, index))
+      : [],
+    ribEvents: Array.isArray(parsed.ribEvents) ? parsed.ribEvents : [],
+    overflowBulletins: Array.isArray(parsed.overflowBulletins) ? parsed.overflowBulletins : [],
+    overflowPages: Array.isArray(parsed.overflowPages) ? parsed.overflowPages : [],
+    posts: Array.isArray(parsed.posts) ? parsed.posts : [],
+    pages: Array.isArray(parsed.pages) ? parsed.pages : [],
+    media: Array.isArray(parsed.media) ? parsed.media : [],
+    comments: Array.isArray(parsed.comments) ? parsed.comments : [],
+    users: Array.isArray(parsed.users) ? parsed.users : [],
+    categories: Array.isArray(parsed.categories) ? parsed.categories : [],
+    tags: Array.isArray(parsed.tags) ? parsed.tags : [],
+    settings: {
+      ...DEFAULT_SETTINGS,
+      ...(parsed.settings ?? {}),
+    },
+  }
+}
+
 // ── Storage ────────────────────────────────────────────────────────────────
 
 const STORE_KEY = 'parhad_content'
@@ -166,7 +297,11 @@ const STORE_KEY = 'parhad_content'
 export function getContent(): SiteContent | null {
   try {
     const raw = localStorage.getItem(STORE_KEY)
-    return raw ? JSON.parse(raw) : null
+    if (!raw) {
+      return null
+    }
+
+    return normalizeSiteContent(JSON.parse(raw))
   } catch {
     return null
   }
@@ -199,7 +334,7 @@ function patch(updater: (c: SiteContent) => SiteContent) {
   if (c) saveContent(updater(c))
 }
 
-export const updateNavLinks = (navLinks: string[]) => patch(c => ({ ...c, navLinks }))
+export const updateNavLinks = (navLinks: NavLinkItem[]) => patch(c => ({ ...c, navLinks }))
 export const updateRibEvents = (ribEvents: RibEvent[]) => patch(c => ({ ...c, ribEvents }))
 export const updateBulletins = (overflowBulletins: BulletinStrip[]) => patch(c => ({ ...c, overflowBulletins }))
 export const updateOverflowPages = (overflowPages: OverflowPage[]) => patch(c => ({ ...c, overflowPages }))
@@ -216,7 +351,8 @@ export const updateSettings = (settings: SiteSettings) => patch(c => ({ ...c, se
 
 export type UploadResult = { url: string; key: string }
 
-export async function uploadToS3(_file: File): Promise<UploadResult> {
+export async function uploadToS3(file: File): Promise<UploadResult> {
+  void file
   // TODO: Amazon S3 bağlantısı buraya gelecek
   // const formData = new FormData()
   // formData.append('file', file)

@@ -29,7 +29,7 @@ const NAV: { section: string; items: NavItem[] }[] = [
   {
     section: 'Yönetim',
     items: [
-      { to: '/admin/navigation', icon: '≡', label: 'Navigasyon' },
+      { to: '/admin/navigation', icon: '≡', label: 'Header Sayfaları' },
       { to: '/admin/users', icon: '👥', label: 'Kullanıcılar' },
       { to: '/admin/settings', icon: '⚙', label: 'Ayarlar' },
     ],

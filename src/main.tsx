@@ -20,9 +20,12 @@ import Users from './admin/pages/Users.tsx'
 import Settings from './admin/pages/Settings.tsx'
 import { isAuthenticated } from './admin/useAuth.ts'
 
-function RequireAuth({ children }: { children: React.ReactNode }) {
-  if (!isAuthenticated()) return <Navigate to="/admin/login" replace />
-  return <>{children}</>
+function renderProtected(children: React.ReactNode) {
+  if (!isAuthenticated()) {
+    return <Navigate to="/admin/login" replace />
+  }
+
+  return children
 }
 
 createRoot(document.getElementById('root')!).render(
@@ -31,7 +34,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin" element={<RequireAuth><AdminLayout /></RequireAuth>}>
+        <Route path="/admin" element={renderProtected(<AdminLayout />)}>
           <Route index element={<Dashboard />} />
           {/* Yazılar */}
           <Route path="posts" element={<Posts />} />
