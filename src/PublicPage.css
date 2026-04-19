@@ -1,0 +1,157 @@
+.pub-shell {
+  min-height: 100vh;
+  background: #0a0e1a;
+  color: rgba(220, 230, 255, 0.88);
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.pub-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.2rem 2.5rem;
+  border-bottom: 1px solid rgba(214, 223, 255, 0.1);
+  background: rgba(10, 14, 26, 0.9);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.pub-logo-link { display: flex; }
+.pub-logo { height: 36px; width: auto; }
+
+.pub-nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
+.pub-nav a {
+  color: rgba(200, 215, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 150ms;
+}
+
+.pub-nav a:hover { color: #d0eaff; }
+
+.pub-main {
+  flex: 1;
+  padding: 3rem 2rem 5rem;
+}
+
+.pub-content-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pub-template-full-width .pub-content-wrap {
+  max-width: 1100px;
+}
+
+.pub-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: #e8f0ff;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+
+.pub-body {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(210, 225, 255, 0.8);
+}
+
+.pub-body h1,
+.pub-body h2,
+.pub-body h3 {
+  color: #e8f0ff;
+  margin: 1.5rem 0 0.75rem;
+  line-height: 1.3;
+}
+
+.pub-body h1 { font-size: 1.9rem; }
+.pub-body h2 { font-size: 1.5rem; }
+.pub-body h3 { font-size: 1.2rem; }
+
+.pub-body p { margin-bottom: 1rem; }
+
+.pub-body a {
+  color: #7ec8f5;
+  text-decoration: underline;
+}
+
+.pub-body ul,
+.pub-body ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.pub-body li { margin-bottom: 0.3rem; }
+
+.pub-body blockquote {
+  border-left: 3px solid rgba(100, 160, 255, 0.4);
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  color: rgba(200, 215, 255, 0.6);
+  font-style: italic;
+}
+
+.pub-body pre {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+
+.pub-body img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+}
+
+.pub-body iframe {
+  max-width: 100%;
+  border-radius: 0.5rem;
+}
+
+.pub-footer {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid rgba(214, 223, 255, 0.08);
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(200, 215, 255, 0.3);
+}
+
+.pub-loading,
+.pub-not-found {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem;
+  text-align: center;
+}
+
+.pub-not-found h1 {
+  font-size: 5rem;
+  font-weight: 800;
+  color: rgba(200, 215, 255, 0.15);
+  line-height: 1;
+}
+
+.pub-not-found p {
+  color: rgba(200, 215, 255, 0.5);
+}
+
+.pub-not-found a {
+  color: #7ec8f5;
+  text-decoration: underline;
+}

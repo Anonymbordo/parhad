@@ -18,6 +18,7 @@ import Navigation from './admin/pages/Navigation.tsx'
 import Comments from './admin/pages/Comments.tsx'
 import Users from './admin/pages/Users.tsx'
 import Settings from './admin/pages/Settings.tsx'
+import PublicPage from './PublicPage.tsx'
 import { isAuthenticated } from './admin/useAuth.ts'
 
 function renderProtected(children: React.ReactNode) {
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/admin/login" element={<Login />} />
+        <Route path="/:slug" element={<PublicPage />} />
         <Route path="/admin" element={renderProtected(<AdminLayout />)}>
           <Route index element={<Dashboard />} />
           {/* Yazılar */}
