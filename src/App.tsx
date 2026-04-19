@@ -41,13 +41,6 @@ const defaultNavLinks: NavLinkItem[] = [
   { id: 'nav-iletisim', label: 'İletişim Bilgileri', slug: 'iletisim-bilgileri', pageId: null, children: [] },
 ]
 
-const commandLinks = [
-  'Makaleler',
-  'Video Kütüphanesi',
-  'Etkinlik Sayfaları',
-  'Saha Notları',
-  'Yorum Akışı',
-]
 
 const ribEvents: RibEvent[] = [
   {
@@ -628,28 +621,7 @@ function App() {
 
             <div className="scene-layout">
               <aside className="scene-rail scene-rail-left">
-                <div className="hero-panel hero-panel-copy">
-                  <p className="panel-kicker">Sahne içinde ne arıyorsun?</p>
-                  <ul className="command-list">
-                    {commandLinks.map((item) => (
-                      <li key={item}>
-                        <span>-&gt;</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="command-button" type="button">
-                    PARHAD ağına bağlan
-                  </button>
-                </div>
-              </aside>
-
-              <section className="anatomy-orbit">
-                <div className="stage-frame stage-frame-primary" aria-hidden="true" />
-                <div className="stage-frame stage-frame-secondary" aria-hidden="true" />
-                <div className="stage-frame-glow" aria-hidden="true" />
-
-                <article className={`floating-panel ${primaryFloatingPanel.className}`}>
+                <article className={`floating-panel ${primaryFloatingPanel.className} panel-in-rail`}>
                   <p>{primaryFloatingPanel.eyebrow}</p>
                   <h2>
                     {primaryFloatingPanel.title.split('\n').map((line) => (
@@ -658,7 +630,7 @@ function App() {
                   </h2>
                   <strong>{primaryFloatingPanel.body}</strong>
                   <div className="focus-dock">
-                    <p className="focus-dock-label">Vertebral odak</p>
+                    <p className="focus-dock-label">Etkinlik seç</p>
                     <div className="focus-chip-row">
                       {activeRibEvents.map((event) => (
                         <button
@@ -672,12 +644,34 @@ function App() {
                       ))}
                     </div>
                     <span className="focus-dock-copy">
-                      {`${activeRegion.level} odakta: ${activeRegion.region}. Bu node makale, video ve etkinlik sayfası gibi davranır.`}
+                      {`${activeRegion.level}: ${activeRegion.region}`}
                     </span>
                   </div>
                 </article>
+              </aside>
 
-                <div className="model-housing">
+              <section className="anatomy-orbit">
+                <div className="stage-frame-glow" aria-hidden="true" />
+
+                <div className="rib-col rib-col-left">
+                  {activeRibEvents.filter(e => e.side === 'left').map((event) => (
+                    <article className="rib-anchor" key={event.id}>
+                      <button
+                        className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
+                        type="button"
+                        onClick={() => setActiveRegionId(event.id)}
+                        aria-pressed={resolvedActiveRegionId === event.id}
+                      >
+                        <strong className="rib-node-level">{event.level}</strong>
+                        <p>{event.region}</p>
+                        <h3>{event.title}</h3>
+                        <span>{event.meta}</span>
+                      </button>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="anatomy-logo-center">
                   <Suspense
                     fallback={
                       <div className="intro-model-fallback" aria-hidden="true">
@@ -689,43 +683,22 @@ function App() {
                   </Suspense>
                 </div>
 
-                <div className="rib-anchor-layer">
-                  <div className="rib-col rib-col-left">
-                    {activeRibEvents.filter(e => e.side === 'left').map((event) => (
-                      <article className="rib-anchor" key={event.id}>
-                        <span className="rib-line" aria-hidden="true" />
-                        <button
-                          className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
-                          type="button"
-                          onClick={() => setActiveRegionId(event.id)}
-                          aria-pressed={resolvedActiveRegionId === event.id}
-                        >
-                          <strong className="rib-node-level">{event.level}</strong>
-                          <p>{event.region}</p>
-                          <h3>{event.title}</h3>
-                          <span>{event.meta}</span>
-                        </button>
-                      </article>
-                    ))}
-                  </div>
-                  <div className="rib-col rib-col-right">
-                    {activeRibEvents.filter(e => e.side === 'right').map((event) => (
-                      <article className="rib-anchor" key={event.id}>
-                        <span className="rib-line" aria-hidden="true" />
-                        <button
-                          className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
-                          type="button"
-                          onClick={() => setActiveRegionId(event.id)}
-                          aria-pressed={resolvedActiveRegionId === event.id}
-                        >
-                          <strong className="rib-node-level">{event.level}</strong>
-                          <p>{event.region}</p>
-                          <h3>{event.title}</h3>
-                          <span>{event.meta}</span>
-                        </button>
-                      </article>
-                    ))}
-                  </div>
+                <div className="rib-col rib-col-right">
+                  {activeRibEvents.filter(e => e.side === 'right').map((event) => (
+                    <article className="rib-anchor" key={event.id}>
+                      <button
+                        className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
+                        type="button"
+                        onClick={() => setActiveRegionId(event.id)}
+                        aria-pressed={resolvedActiveRegionId === event.id}
+                      >
+                        <strong className="rib-node-level">{event.level}</strong>
+                        <p>{event.region}</p>
+                        <h3>{event.title}</h3>
+                        <span>{event.meta}</span>
+                      </button>
+                    </article>
+                  ))}
                 </div>
               </section>
 

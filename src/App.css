@@ -395,7 +395,7 @@
 }
 
 .scene-rail-left {
-  align-items: flex-end;
+  align-items: stretch;
   padding-bottom: 2.6rem;
 }
 
@@ -531,17 +531,18 @@
 }
 
 .floating-panel-primary {
-  --panel-transform: perspective(1600px) rotateY(11deg) rotateX(4deg);
-  position: absolute;
-  top: 2.7rem;
-  left: 5.5%;
-  width: min(26rem, 39%);
+  position: relative;
+  width: 100%;
   padding: 1.6rem 1.6rem 1.78rem;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04) 18%, transparent 100%),
     rgba(18, 21, 33, 0.78);
-  transform: var(--panel-transform);
   animation: panelFloat 12s ease-in-out infinite;
+}
+
+.panel-in-rail {
+  flex: 1;
+  align-self: stretch;
 }
 
 .floating-panel-primary h2 {
@@ -702,6 +703,9 @@
   position: relative;
   min-height: calc(100svh - 8.8rem);
   overflow: visible;
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
 }
 
 .spine-column {
@@ -729,12 +733,7 @@
 }
 
 .model-housing {
-  position: absolute;
-  inset: 3.8rem 12% 0;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
+  display: none;
 }
 
 .model-housing .intro-model-shell {
@@ -753,22 +752,14 @@
   background: radial-gradient(circle at center, rgba(113, 214, 255, 0.16), transparent 60%);
 }
 
-.rib-anchor-layer {
-  position: absolute;
-  inset: 0 0 2rem;
-  z-index: 4;
-  display: flex;
-  justify-content: space-between;
-  pointer-events: none;
-}
-
 .rib-col {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  padding: 2.5rem 0 1.5rem;
-  width: 44%;
-  pointer-events: none;
+  padding: 2rem 0;
+  z-index: 4;
+  gap: 0.75rem;
 }
 
 .rib-col-left {
@@ -780,9 +771,15 @@
 }
 
 .rib-anchor {
-  position: relative;
   width: 100%;
-  pointer-events: auto;
+}
+
+.anatomy-logo-center {
+  flex: 0 0 clamp(200px, 22vw, 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 }
 
 .rib-line {
@@ -859,10 +856,12 @@
 
 .rib-col-left .rib-node {
   margin-right: auto;
+  text-align: left;
 }
 
 .rib-col-right .rib-node {
   margin-left: auto;
+  text-align: right;
 }
 
 .rib-node p {
