@@ -77,8 +77,8 @@
 
 /* Keyframes */
 @keyframes logo-float {
-  0%, 100% { transform: translateY(0px) rotate(-1deg); }
-  50%       { transform: translateY(-18px) rotate(1deg); }
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-18px); }
 }
 
 @keyframes logo-glow {
