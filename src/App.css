@@ -775,11 +775,12 @@
 }
 
 .anatomy-logo-center {
-  flex: 0 0 clamp(200px, 22vw, 300px);
+  flex: 0 0 clamp(200px, 20vw, 280px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
+  overflow: visible;
 }
 
 .rib-line {

@@ -21,9 +21,6 @@ export default function IntroModelScene({ focus = null }: { focus?: FocusTarget 
       <div className="logo-scene-halo logo-scene-halo-blue" />
       <div className="logo-scene-halo logo-scene-halo-white" />
 
-      <div className="logo-scene-ring logo-scene-ring-outer" />
-      <div className="logo-scene-ring logo-scene-ring-inner" />
-
       <div className="logo-scene-float">
         <img
           src="/parhad-logo-round-white.png"

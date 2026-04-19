@@ -651,7 +651,6 @@ function App() {
               </aside>
 
               <section className="anatomy-orbit">
-                <div className="stage-frame-glow" aria-hidden="true" />
 
                 <div className="rib-col rib-col-left">
                   {activeRibEvents.filter(e => e.side === 'left').map((event) => (

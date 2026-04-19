@@ -1,107 +1,88 @@
 .logo-scene-shell {
   position: relative;
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-/* Halo glow effects */
+/* Glow halkaları — radial, dikdörtgen değil */
 .logo-scene-halo {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
   pointer-events: none;
+  z-index: 0;
 }
 
 .logo-scene-halo-red {
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(220, 60, 80, 0.35) 0%, transparent 70%);
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(200, 40, 60, 0.28) 0%, transparent 65%);
+  filter: blur(48px);
   animation: halo-pulse-red 4s ease-in-out infinite;
 }
 
 .logo-scene-halo-blue {
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(80, 160, 255, 0.25) 0%, transparent 70%);
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(60, 140, 255, 0.18) 0%, transparent 65%);
+  filter: blur(40px);
   animation: halo-pulse-blue 5.5s ease-in-out infinite;
 }
 
 .logo-scene-halo-white {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 65%);
+  filter: blur(30px);
   animation: halo-pulse-white 3s ease-in-out infinite;
 }
 
-/* Rotating rings */
-.logo-scene-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(220, 100, 120, 0.2);
-  pointer-events: none;
-}
-
-.logo-scene-ring-outer {
-  width: 360px;
-  height: 360px;
-  border-color: rgba(220, 100, 120, 0.15);
-  animation: ring-spin 18s linear infinite;
-}
-
-.logo-scene-ring-inner {
-  width: 280px;
-  height: 280px;
-  border-color: rgba(100, 180, 255, 0.12);
-  animation: ring-spin 12s linear infinite reverse;
-}
-
-/* Logo float */
+/* Logo */
 .logo-scene-float {
   position: relative;
   z-index: 2;
-  animation: logo-float 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 40px rgba(220, 60, 80, 0.45))
-          drop-shadow(0 0 80px rgba(220, 60, 80, 0.2));
+  animation: logo-float 5s ease-in-out infinite;
 }
 
 .logo-scene-img {
-  width: clamp(180px, 22vw, 260px);
+  width: clamp(140px, 16vw, 220px);
   height: auto;
   display: block;
-  animation: logo-glow 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(200, 40, 60, 0.6))
+          drop-shadow(0 0 64px rgba(200, 40, 60, 0.25));
+  animation: logo-glow 5s ease-in-out infinite;
 }
 
-/* Keyframes */
 @keyframes logo-float {
   0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-18px); }
+  50%       { transform: translateY(-14px); }
 }
 
 @keyframes logo-glow {
-  0%, 100% { filter: drop-shadow(0 0 30px rgba(220, 60, 80, 0.5)) drop-shadow(0 0 60px rgba(220, 60, 80, 0.2)); }
-  50%       { filter: drop-shadow(0 0 50px rgba(220, 60, 80, 0.8)) drop-shadow(0 0 100px rgba(220, 60, 80, 0.35)); }
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(200, 40, 60, 0.55))
+            drop-shadow(0 0 50px rgba(200, 40, 60, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 36px rgba(220, 60, 80, 0.85))
+            drop-shadow(0 0 80px rgba(220, 60, 80, 0.35));
+  }
 }
 
 @keyframes halo-pulse-red {
   0%, 100% { opacity: 0.7; transform: scale(1); }
-  50%       { opacity: 1; transform: scale(1.12); }
+  50%       { opacity: 1;   transform: scale(1.1); }
 }
 
 @keyframes halo-pulse-blue {
-  0%, 100% { opacity: 0.5; transform: scale(1.05); }
-  50%       { opacity: 0.9; transform: scale(0.95); }
+  0%, 100% { opacity: 0.5; transform: scale(1.06); }
+  50%       { opacity: 0.85; transform: scale(0.96); }
 }
 
 @keyframes halo-pulse-white {
-  0%, 100% { opacity: 0.6; }
+  0%, 100% { opacity: 0.5; }
   50%       { opacity: 1; }
-}
-
-@keyframes ring-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
 }
