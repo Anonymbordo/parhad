@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import './App.css'
 import turkeyMapMarkup from '../tr.svg?raw'
 import { getContent, saveContent, slugify, type SiteContent, type RibEvent, type NavLinkItem, DEFAULT_SETTINGS } from './admin/store'
@@ -690,26 +690,42 @@ function App() {
                 </div>
 
                 <div className="rib-anchor-layer">
-                  {activeRibEvents.map((event) => (
-                    <article
-                      className={`rib-anchor rib-anchor-${event.side}`}
-                      key={`${event.title}-${event.meta}`}
-                      style={{ ['--anchor-y' as const]: event.offset } as CSSProperties}
-                    >
-                      <span className="rib-line" aria-hidden="true" />
-                      <button
-                        className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
-                        type="button"
-                        onClick={() => setActiveRegionId(event.id)}
-                        aria-pressed={resolvedActiveRegionId === event.id}
-                      >
-                        <strong className="rib-node-level">{event.level}</strong>
-                        <p>{event.region}</p>
-                        <h3>{event.title}</h3>
-                        <span>{event.meta}</span>
-                      </button>
-                    </article>
-                  ))}
+                  <div className="rib-col rib-col-left">
+                    {activeRibEvents.filter(e => e.side === 'left').map((event) => (
+                      <article className="rib-anchor" key={event.id}>
+                        <span className="rib-line" aria-hidden="true" />
+                        <button
+                          className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
+                          type="button"
+                          onClick={() => setActiveRegionId(event.id)}
+                          aria-pressed={resolvedActiveRegionId === event.id}
+                        >
+                          <strong className="rib-node-level">{event.level}</strong>
+                          <p>{event.region}</p>
+                          <h3>{event.title}</h3>
+                          <span>{event.meta}</span>
+                        </button>
+                      </article>
+                    ))}
+                  </div>
+                  <div className="rib-col rib-col-right">
+                    {activeRibEvents.filter(e => e.side === 'right').map((event) => (
+                      <article className="rib-anchor" key={event.id}>
+                        <span className="rib-line" aria-hidden="true" />
+                        <button
+                          className={`rib-node ${resolvedActiveRegionId === event.id ? 'rib-node-active' : ''}`}
+                          type="button"
+                          onClick={() => setActiveRegionId(event.id)}
+                          aria-pressed={resolvedActiveRegionId === event.id}
+                        >
+                          <strong className="rib-node-level">{event.level}</strong>
+                          <p>{event.region}</p>
+                          <h3>{event.title}</h3>
+                          <span>{event.meta}</span>
+                        </button>
+                      </article>
+                    ))}
+                  </div>
                 </div>
               </section>
 

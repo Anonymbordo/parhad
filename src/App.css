@@ -757,20 +757,32 @@
   position: absolute;
   inset: 0 0 2rem;
   z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.rib-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 2.5rem 0 1.5rem;
+  width: 44%;
+  pointer-events: none;
+}
+
+.rib-col-left {
+  align-items: flex-start;
+}
+
+.rib-col-right {
+  align-items: flex-end;
 }
 
 .rib-anchor {
-  position: absolute;
-  top: var(--anchor-y);
-  width: 43%;
-}
-
-.rib-anchor-left {
-  left: -7%;
-}
-
-.rib-anchor-right {
-  right: -7%;
+  position: relative;
+  width: 100%;
+  pointer-events: auto;
 }
 
 .rib-line {
@@ -793,12 +805,12 @@
   border-top: 1px solid rgba(120, 220, 255, 0.16);
 }
 
-.rib-anchor-left .rib-line {
+.rib-col-left .rib-line {
   right: 3.8rem;
   border-left: 1px solid rgba(200, 228, 255, 0.18);
 }
 
-.rib-anchor-right .rib-line {
+.rib-col-right .rib-line {
   left: 3.8rem;
   border-right: 1px solid rgba(200, 228, 255, 0.18);
 }
@@ -845,11 +857,11 @@
   letter-spacing: -0.04em;
 }
 
-.rib-anchor-left .rib-node {
+.rib-col-left .rib-node {
   margin-right: auto;
 }
 
-.rib-anchor-right .rib-node {
+.rib-col-right .rib-node {
   margin-left: auto;
 }
 
