@@ -15,6 +15,7 @@ const NAV: { section: string; items: NavItem[] }[] = [
       { to: '/admin/posts', icon: '✏', label: 'Yazılar' },
       { to: '/admin/site-pages', icon: '▣', label: 'Sayfalar' },
       { to: '/admin/media', icon: '🖼', label: 'Medya' },
+      { to: '/admin/files', icon: '📁', label: 'Dosya Gezgini' },
       { to: '/admin/comments', icon: '💬', label: 'Yorumlar' },
     ],
   },

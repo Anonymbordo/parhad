@@ -11,6 +11,7 @@ import PostEdit from './admin/pages/PostEdit.tsx'
 import SitePages from './admin/pages/SitePages.tsx'
 import PageEdit from './admin/pages/PageEdit.tsx'
 import Media from './admin/pages/Media.tsx'
+import FileExplorer from './admin/pages/FileExplorer.tsx'
 import Events from './admin/pages/Events.tsx'
 import Bulletins from './admin/pages/Bulletins.tsx'
 import ContentCards from './admin/pages/Pages.tsx'
@@ -46,6 +47,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="site-pages/:id" element={<PageEdit />} />
           {/* Medya */}
           <Route path="media" element={<Media />} />
+          <Route path="files" element={<FileExplorer />} />
           {/* Etkinlik & Bülten */}
           <Route path="events" element={<Events />} />
           <Route path="bulletins" element={<Bulletins />} />

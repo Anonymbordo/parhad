@@ -76,9 +76,16 @@ export type MediaItem = {
   alt: string
   caption: string
   date: string
-  // S3 için hazır alanlar
+  folderId?: string
   s3Key?: string
   s3Bucket?: string
+}
+
+export type FileFolder = {
+  id: string
+  name: string
+  parentId: string | null
+  createdAt: string
 }
 
 export type Comment = {
@@ -145,6 +152,7 @@ export type SiteContent = {
   posts: Post[]
   pages: Page[]
   media: MediaItem[]
+  fileFolders: FileFolder[]
   comments: Comment[]
   users: User[]
   categories: Category[]
@@ -279,6 +287,7 @@ function normalizeSiteContent(raw: unknown): SiteContent | null {
     posts: Array.isArray(parsed.posts) ? parsed.posts : [],
     pages: Array.isArray(parsed.pages) ? parsed.pages : [],
     media: Array.isArray(parsed.media) ? parsed.media : [],
+    fileFolders: Array.isArray(parsed.fileFolders) ? parsed.fileFolders : [],
     comments: Array.isArray(parsed.comments) ? parsed.comments : [],
     users: Array.isArray(parsed.users) ? parsed.users : [],
     categories: Array.isArray(parsed.categories) ? parsed.categories : [],
@@ -341,6 +350,7 @@ export const updateOverflowPages = (overflowPages: OverflowPage[]) => patch(c =>
 export const updatePosts = (posts: Post[]) => patch(c => ({ ...c, posts }))
 export const updatePages = (pages: Page[]) => patch(c => ({ ...c, pages }))
 export const updateMedia = (media: MediaItem[]) => patch(c => ({ ...c, media }))
+export const updateFileFolders = (fileFolders: FileFolder[]) => patch(c => ({ ...c, fileFolders }))
 export const updateComments = (comments: Comment[]) => patch(c => ({ ...c, comments }))
 export const updateUsers = (users: User[]) => patch(c => ({ ...c, users }))
 export const updateCategories = (categories: Category[]) => patch(c => ({ ...c, categories }))

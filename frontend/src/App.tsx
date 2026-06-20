@@ -400,6 +400,7 @@ const DEFAULT_CONTENT: SiteContent = {
   posts: [],
   pages: [],
   media: [],
+  fileFolders: [],
   comments: [],
   users: [],
   categories: [],
